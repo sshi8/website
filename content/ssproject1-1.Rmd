@@ -1,0 +1,202 @@
+---
+title: "A Glimpse at Life Expectancies and Estimated Cancer Deaths"
+author: "Sophie Shi"
+date: "10/20/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("dplyr")
+library(dplyr)
+```
+
+
+```{R}
+cancer <- read.csv("~/Downloads/cancerdeath.csv")
+life <- read.csv("~/Downloads/life.csv")
+head(cancer)
+head(life)
+
+```
+
+## Introduction 
+
+The first dataset from the American Cancer Society includes the estimated amount of new cases of cancer and cancer deaths of 2019 by state. This has 55 observations with three variables: State, New Cases, Deaths. These counts are from all cancer types. 
+
+The second dataset is from worldpopulationreview.com-- it gives life expectancy by state as well as life expectancy by race. This dataset has 50 observations with 7 variables: State, Overall average life expectancy, Black average, Latino average, Asian average, Native American average, and Caucasian average in  each of the states. 
+
+It will be interesting to see whether or not life expectancy have any impact on cancer related incidence or deaths by state. We would expect from investigation that states with higher life expectancies will have a lower amount of estimated new cancer cases or cancer deaths. 
+
+## Joining/Merging 
+
+```{R}
+fulldata <- full_join(cancer, life, by="State")
+fulldata <- fulldata %>%
+  na.omit() %>%
+  rename("Estimated New Cases" = Estimated.New.Cases..2019)%>%
+  rename("Estimated Deaths" = Estimated.Deaths..2019.)%>%
+  rename("Life Expectancy Overall (years)" = Overall.Avg..) %>%
+  rename("Life Expectancy African American (years)" = Black.Avg.) %>%
+  rename("Life Expectancy Latino (years)" = Latino.Avg.) %>%
+  rename("Life Expectancy Asian (years)" = Asian.Avg.) %>%
+  rename("Life Expectancy Native American (years)" = Native.American.Avg.) %>%
+  rename("Life Expectancy Caucasian (years)" = White.Avg.) 
+head(data)
+
+```
+
+Full data was used to combine these two datasets based on state. The states with unavailable statistics (NA) were omitted which resulted in losing 6 states from the cancer dataset, and 1 state from the life expectancy dataset. Columns were renamed so that they were easier to read. The resulting joined data has 49 observations and 9 variables.
+
+
+## Tidying: Rearranging Wide/Long 
+
+```{R}
+long <-fulldata %>%
+  pivot_longer(c("Estimated New Cases", "Estimated Deaths"), names_to = "cancer", values_to = "counts")
+long%>%select(cancer, counts)%>%head()
+
+wide <- long%>% pivot_wider(names_from = cancer,
+  values_from = "counts")
+wide%>%select(`Estimated New Cases`,`Estimated Deaths`)%>%head()
+
+```
+
+This data was already tidy, so pivot_longer was used to create a column that combined both variables estimated deaths and estimated new cases of cancer. We then used pivot_wider to tidy the data back to normal. 
+
+## Wrangling 
+
+```{R}
+fulldata %>% filter( State == "Alabama")
+fulldata%>%slice(1:4)%>%glimpse()
+fulldata %>% arrange((`Life Expectancy Overall (years)`))%>%glimpse()
+fulldata %>% select(1,3,8)%>%glimpse()
+fulldata %>% group_by(`Life Expectancy African American (years)`, `Life Expectancy Caucasian (years)`) %>% mutate(white_to_black= (`Life Expectancy Caucasian (years)`/`Life Expectancy African American (years)`))%>%select(white_to_black)%>%head()
+
+fulldata %>%
+  summarize(mean_lifeAfr = mean(`Life Expectancy African American (years)`),
+            sd_lifeAfr = sd(`Life Expectancy African American (years)`),
+            min_lifeAfr=min(`Life Expectancy African American (years)`), 
+            max_lifeAfr = max(`Life Expectancy African American (years)`),
+            IQR_lifeAfr=IQR(`Life Expectancy African American (years)`))
+            
+  fulldata%>% summarize(mean_lifeCau=mean(`Life Expectancy Caucasian (years)`), 
+            sd_lifeCau=sd(`Life Expectancy Caucasian (years)`), 
+            min_lifeCau=min(`Life Expectancy Caucasian (years)`), 
+            max_lifeCau=max(`Life Expectancy Caucasian (years)`), 
+            IQR_lifeCau=IQR(`Life Expectancy Caucasian (years)`))
+
+          
+```
+
+This shows that the filter() function returns all of the variables corresponding with the only the state of Alabama. 
+
+Slice() function returns the first four rows and all of the columns (when organized alphabetically).
+
+We can also arrange overall life expectancy by descending order with arrange().
+
+Select() was used to select columns 1, 3, and 8 of our data.
+
+We added a variable of white to black ratio of each state, where we take the life expectancy of Caucasians and divide by life expectancies of African Americans for each state. At first glance, it seems like the majority of ratios are above one, meaning that the average life expectancy of caucasians in the majority of states is higher than African Americans.
+
+When we calculate our summary statistics using summarize(), we see that African Americans have a mean life expectancy of 76.5 years with a standard deviation of 3.849 years, a minimum life expectancy of 71.6 years, maximum of 86.8 years, an IQR of 4 years. 
+
+For Caucasian Americans, there is a mean life expectancy of 78.89 years with a standard deviation of 1.46 years, a minimum of 75.4 years, maximum of 81.2 years, and an IQR of 2.1 years. 
+
+These summary statistics were calculated because the other races had a lot of missing values. We see on average, African Americans have a lower mean life expectancy but a higher maximum life expectancy than Caucasian Americans. There is less variation from the mean life expectancy from Caucasian Americans as both the IQR and standard deviation are less than that of African Americans. African Americans also have a lower minimum life expectancy than Caucasian Americans. These summary statistics lead us to believe that African Americans have lower life expectancies than Caucasian Americans.
+
+
+```{R}
+fulldata %>%
+  select_if(is.numeric) %>%
+  cor() 
+
+```
+
+This correlation matrix shows how strongly different variables are related. This reveals that African American life expectancy has a moderate positive linear relationship (r=0.51) with overall life expectancy and caucasian life expectancy, whereas caucasian  has a strong positive relationship with overall life expectancy with an r value of 0.95.
+
+## Visualizing 
+
+```{R}
+fulldata$`Estimated Deaths` <- as.numeric(fulldata$`Estimated Deaths`)
+mdata<-as.data.frame(fulldata)
+mdata %>%
+ggplot(aes(x = reorder(State, -`Estimated Deaths`),fill=State, `Estimated Deaths`)) +
+geom_bar(stat = "summary", fun.y="mean")+
+coord_flip() +theme(axis.text.x = element_text(angle = 90, hjust = 0.5)) +
+  ggtitle("Estimated Death Rankings by State") +xlab("State")+theme(legend.position = "none")
+  
+top20life<-fulldata%>%arrange(desc(`Life Expectancy Overall (years)`))%>%slice(1:20)
+
+top20life %>%
+ggplot(aes(x = reorder(State, -`Life Expectancy Overall (years)`), fill=State, `Life Expectancy Overall (years)`)) +
+geom_bar( stat = "summary", fun.y="mean")+
+coord_flip() +theme(axis.text.x = element_text(angle = -35, hjust = 0)) +
+  ggtitle("States with Top Overall Life Expectancy") + xlab("State") +theme(legend.position = "none")+coord_cartesian(ylim=c(60,90))
+  
+```
+
+Making Estimated Death Rankings by State into a data frame in order to plot it in a bar plot. This ranked state by estimated cancer related deaths from 1 being the lowest number of deaths to 50 being the highest. 
+
+We suspected that the states with highest overall life expectancies will have the lowest rankings in cancer deaths. From the first plot, we can see that Alaska is the lowest death ranking, followed by North Dakota, Vermont, South Dakota, and Minnesota with the lowest ranking number of cancer related deaths. 
+
+From the second box plot of the top 20 overall life expectancies, we can see that this data does not necessarily correspond to the overall average life expectancy by state. There is little variation in life expectancy range in this plot as most states have a life expectancy around 80 years. 
+
+We see that the top 5 highest life expectancy from highest to lowest life expectancy show Hawaii as the highest average life expectancy, followed by Minnesota, California, Connecticut, and Massachusetts. Although this data does not correspond directly to the least amount of cancer deaths from the first plot, we see from some states in this top ranked life expectancy plot that appear in the lowest number of cancer deaths such as Vermont, North Dakota, and Minnesota. This may suggest that there is an association with higher life expectancy and lower estimated cancer related deaths by state. 
+
+## Dimensionality Reduction 
+
+
+```{R}
+library(cluster)
+
+fulldata1<-fulldata%>%select_if(is.numeric)%>%scale
+
+dataPCA<-princomp(fulldata1)
+
+names(dataPCA)
+
+summary(dataPCA, loadings=T)
+
+eigval<-dataPCA$sdev^2
+
+
+varprop=round(eigval/sum(eigval),2) #proportion of var explained by each PC
+round(cumsum(eigval)/sum(eigval),2)
+State <-fulldata$State
+fulldata%>%mutate(PC1=dataPCA$scores[,1], PC2=dataPCA$scores[,2])%>%
+ggplot(aes(PC1,PC2,color=State))+geom_point(aes(dataPCA$scores[,1], dataPCA$scores[,2]))+xlab("PC1")+ylab("PC2")+
+  theme(legend.position = "none") #plots data with respect to first two PC
+
+
+dataPCA$scores%>%as.data.frame%>%cbind(State,.)%>%top_n(3,Comp.1) #highest on PC1
+dataPCA$scores%>%as.data.frame%>%cbind(State,.)%>%top_n(3,wt=desc(Comp.1)) #lowest on PC1
+dataPCA$scores%>%as.data.frame%>%cbind(State,.)%>%top_n(3,wt=Comp.2) #highest on PC2
+dataPCA$scores%>%as.data.frame%>%cbind(State,.)%>%top_n(3,wt=desc(Comp.2)) #lowest on PC2
+```
+
+
+Arkansas, Oklahoma and W. Virginia show the most variance on PC1. California, Colorado, and Oregon show the most variance on PC2. Data is scattered along both axes of PC1 and PC2; PC1 and PC2 do not seem to have any association with State. 
+ 
+ 
+ 
+```{R}
+library(factoextra)
+fviz_pca_biplot(dataPCA)
+
+```
+
+
+From the biplot, see that Life Expectancy Overall and Life Expectancy of Caucasian Americans is strongly positively correlated as they are at a small angle away from one another in the biplot.
+
+Life expectancy of African Americans is moderately positively correlated as it is pointing in the same direction but at a larger angle away from the other two variables. 
+
+Estimated Deaths seems to be slightly negatively correlated with the other variables. 
+

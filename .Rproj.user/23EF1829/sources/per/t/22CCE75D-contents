@@ -1,0 +1,7 @@
+---
+site: blogdown:::blogdown_site
+---
+install.packages("blogdown")
+blogdown::install_hugo()
+hugo_version()
+blogdown::serve_site() 
