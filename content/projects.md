@@ -11,6 +11,6 @@ title: Projects
 
 Here are some projects I have been working on:
 
-- [Project 1](/ssproject1-1/)
+- [Project 1](/expectancy/)
 
 - [Project 2](/project2/)

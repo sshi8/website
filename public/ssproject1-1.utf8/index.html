@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sophie Shi" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>A Glimpse at Life Expectancies and Estimated Cancer Deaths</title>
+    <meta name="generator" content="Hugo 0.61.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/about/">ABOUT</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/ssproject1-1.utf8/">A Glimpse at Life Expectancies and Estimated Cancer Deaths</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">cancer <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">~/Downloads/cancerdeath.csv&#34;</span>)
+life <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">read.csv</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">~/Downloads/life.csv&#34;</span>)
+<span style="color:#a6e22e">head</span>(cancer)
+</code></pre></div><pre><code>##      State Estimated.New.Cases..2019 Estimated.Deaths..2019.
+## 1                                                           
+## 2                                                           
+## 3  Alabama                    28,950                  10,630
+## 4   Alaska                     3,090                   1,120
+## 5  Arizona                    37,490                  12,470
+## 6 Arkansas                    16,580                   6,800
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">head</span>(life)
+</code></pre></div><pre><code>##         State Overall.Avg.. Black.Avg. Latino.Avg. Asian.Avg.
+## 1      Hawaii          81.3       79.7        87.3       83.5
+## 2   Minnesota          81.1       82.5        76.8         82
+## 3 Connecticut          80.8       77.8        83.1       89.1
+## 4  California          80.8       75.1        83.2       86.3
+## 5     Vermont          80.5       84.4           -          -
+## 6    New York          80.5       77.4        83.5       88.6
+##   Native.American.Avg. White.Avg.
+## 1                 70.2       81.2
+## 2                    -       80.4
+## 3                    -       81.0
+## 4                 80.2       79.8
+## 5                    -       80.4
+## 6                    -       80.5
+</code></pre><h2 id="introduction">Introduction</h2>
+<p>The first dataset from the American Cancer Society includes the estimated amount of new cases of cancer and cancer deaths of 2019 by state. This has 55 observations with three variables: State, New Cases, Deaths. These counts are from all cancer types.</p>
+<p>The second dataset is from worldpopulationreview.com&ndash; it gives life expectancy by state as well as life expectancy by race. This dataset has 50 observations with 7 variables: State, Overall average life expectancy, Black average, Latino average, Asian average, Native American average, and Caucasian average in  each of the states.</p>
+<p>It will be interesting to see whether or not life expectancy have any impact on cancer related incidence or deaths by state. We would expect from investigation that states with higher life expectancies will have a lower amount of estimated new cancer cases or cancer deaths.</p>
+<h2 id="joiningmerging">Joining/Merging</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">full_join</span>(cancer, life, by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">State&#34;</span>)
+</code></pre></div><pre><code>## Warning: Column `State` joining factors with different levels, coercing to
+## character vector
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">&lt;-</span> fulldata <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">na.omit</span>() <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Estimated New Cases&#34;</span> <span style="color:#f92672">=</span> Estimated.New.Cases..2019)<span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Estimated Deaths&#34;</span> <span style="color:#f92672">=</span> Estimated.Deaths..2019.)<span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy Overall (years)&#34;</span> <span style="color:#f92672">=</span> Overall.Avg..) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy African American (years)&#34;</span> <span style="color:#f92672">=</span> Black.Avg.) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy Latino (years)&#34;</span> <span style="color:#f92672">=</span> Latino.Avg.) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy Asian (years)&#34;</span> <span style="color:#f92672">=</span> Asian.Avg.) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy Native American (years)&#34;</span> <span style="color:#f92672">=</span> Native.American.Avg.) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">rename</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Life Expectancy Caucasian (years)&#34;</span> <span style="color:#f92672">=</span> White.Avg.) 
+<span style="color:#a6e22e">head</span>(data)
+</code></pre></div><pre><code>##                                                                      
+## 1 function (..., list = character(), package = NULL, lib.loc = NULL, 
+## 2     verbose = getOption(&quot;verbose&quot;), envir = .GlobalEnv)            
+## 3 {                                                                  
+## 4     fileExt &lt;- function(x) {                                       
+## 5         db &lt;- grepl(&quot;\\\\.[^.]+\\\\.(gz|bz2|xz)$&quot;, x)              
+## 6         ans &lt;- sub(&quot;.*\\\\.&quot;, &quot;&quot;, x)
+</code></pre><p>Full data was used to combine these two datasets based on state. The states with unavailable statistics (NA) were omitted which resulted in losing 6 states from the cancer dataset, and 1 state from the life expectancy dataset. Columns were renamed so that they were easier to read. The resulting joined data has 49 observations and 9 variables.</p>
+<h2 id="tidying-rearranging-widelong">Tidying: Rearranging Wide/Long</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">long <span style="color:#f92672">&lt;-</span>fulldata <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">pivot_longer</span>(<span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Estimated New Cases&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Estimated Deaths&#34;</span>), names_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">cancer&#34;</span>, values_to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">counts&#34;</span>)
+long<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">select</span>(cancer, counts)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">head</span>()
+</code></pre></div><pre><code>## # A tibble: 6 x 2
+##   cancer              counts
+##   &lt;chr&gt;               &lt;fct&gt; 
+## 1 Estimated New Cases 28,950
+## 2 Estimated Deaths    10,630
+## 3 Estimated New Cases 3,090 
+## 4 Estimated Deaths    1,120 
+## 5 Estimated New Cases 37,490
+## 6 Estimated Deaths    12,470
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">wide <span style="color:#f92672">&lt;-</span> long<span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">pivot_wider</span>(names_from <span style="color:#f92672">=</span> cancer,
+  values_from <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">counts&#34;</span>)
+wide<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">select</span>(`Estimated New Cases`,`Estimated Deaths`)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">head</span>()
+</code></pre></div><pre><code>## # A tibble: 6 x 2
+##   `Estimated New Cases` `Estimated Deaths`
+##   &lt;fct&gt;                 &lt;fct&gt;             
+## 1 28,950                10,630            
+## 2 3,090                 1,120             
+## 3 37,490                12,470            
+## 4 16,580                6,800             
+## 5 186,920               60,590            
+## 6 26,800                8,120
+</code></pre><p>This data was already tidy, so pivot_longer was used to create a column that combined both variables estimated deaths and estimated new cases of cancer. We then used pivot_wider to tidy the data back to normal.</p>
+<h2 id="wrangling">Wrangling</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">filter</span>( State <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Alabama&#34;</span>)
+</code></pre></div><pre><code>##     State Estimated New Cases Estimated Deaths Life Expectancy Overall (years)
+## 1 Alabama              28,950           10,630                            75.4
+##   Life Expectancy African American (years) Life Expectancy Latino (years)
+## 1                                     72.9                              -
+##   Life Expectancy Asian (years) Life Expectancy Native American (years)
+## 1                            76                                       -
+##   Life Expectancy Caucasian (years)
+## 1                                76
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">4</span>)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">glimpse</span>()
+</code></pre></div><pre><code>## Observations: 4
+## Variables: 9
+## $ State                                      &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Ariz…
+## $ `Estimated New Cases`                      &lt;fct&gt; &quot;28,950&quot;, &quot;3,090&quot;, &quot;37,490…
+## $ `Estimated Deaths`                         &lt;fct&gt; &quot;10,630&quot;, &quot;1,120&quot;, &quot;12,470…
+## $ `Life Expectancy Overall (years)`          &lt;dbl&gt; 75.4, 78.3, 79.6, 76.0
+## $ `Life Expectancy African American (years)` &lt;dbl&gt; 72.9, 79.3, 76.5, 72.2
+## $ `Life Expectancy Latino (years)`           &lt;fct&gt; -, -, 80.8, -
+## $ `Life Expectancy Asian (years)`            &lt;fct&gt; 76, -, 86.7, -
+## $ `Life Expectancy Native American (years)`  &lt;fct&gt; -, 70.5, 72.7, -
+## $ `Life Expectancy Caucasian (years)`        &lt;dbl&gt; 76.0, 79.4, 79.8, 76.3
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">arrange</span>((`Life Expectancy Overall (years)`))<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">glimpse</span>()
+</code></pre></div><pre><code>## Observations: 49
+## Variables: 9
+## $ State                                      &lt;chr&gt; &quot;Alabama&quot;, &quot;West Virginia&quot;…
+## $ `Estimated New Cases`                      &lt;fct&gt; &quot;28,950&quot;, &quot;12,440&quot;, &quot;26,80…
+## $ `Estimated Deaths`                         &lt;fct&gt; &quot;10,630&quot;, &quot;4,820&quot;, &quot;9,260&quot;…
+## $ `Life Expectancy Overall (years)`          &lt;dbl&gt; 75.4, 75.4, 75.7, 75.9, 76…
+## $ `Life Expectancy African American (years)` &lt;dbl&gt; 72.9, 72.8, 72.4, 72.8, 72…
+## $ `Life Expectancy Latino (years)`           &lt;fct&gt; -, -, -, 85, -, -, -, -, -…
+## $ `Life Expectancy Asian (years)`            &lt;fct&gt; 76, -, 85.6, -, -, -, 84.2…
+## $ `Life Expectancy Native American (years)`  &lt;fct&gt; -, -, -, 73.8, -, -, -, -,…
+## $ `Life Expectancy Caucasian (years)`        &lt;dbl&gt; 76.0, 75.4, 76.7, 76.0, 76…
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">8</span>)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">glimpse</span>()
+</code></pre></div><pre><code>## Observations: 49
+## Variables: 3
+## $ State                                     &lt;chr&gt; &quot;Alabama&quot;, &quot;Alaska&quot;, &quot;Arizo…
+## $ `Estimated Deaths`                        &lt;fct&gt; &quot;10,630&quot;, &quot;1,120&quot;, &quot;12,470&quot;…
+## $ `Life Expectancy Native American (years)` &lt;fct&gt; -, 70.5, 72.7, -, 80.2, -, …
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">group_by</span>(`Life Expectancy African American (years)`, `Life Expectancy Caucasian (years)`) <span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">mutate</span>(white_to_black<span style="color:#f92672">=</span> (`Life Expectancy Caucasian (years)`<span style="color:#f92672">/</span>`Life Expectancy African American (years)`))<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">select</span>(white_to_black)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">head</span>()
+</code></pre></div><pre><code>## Adding missing grouping variables: `Life Expectancy African American (years)`,
+## `Life Expectancy Caucasian (years)`
+</code></pre><pre><code>## # A tibble: 6 x 3
+## # Groups:   Life Expectancy African American (years), Life Expectancy Caucasian
+## #   (years) [6]
+##   `Life Expectancy African American… `Life Expectancy Caucasian … white_to_black
+##                                &lt;dbl&gt;                        &lt;dbl&gt;          &lt;dbl&gt;
+## 1                               72.9                         76             1.04
+## 2                               79.3                         79.4           1.00
+## 3                               76.5                         79.8           1.04
+## 4                               72.2                         76.3           1.06
+## 5                               75.1                         79.8           1.06
+## 6                               76.7                         80.2           1.05
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">summarize</span>(mean_lifeAfr <span style="color:#f92672">=</span> <span style="color:#a6e22e">mean</span>(`Life Expectancy African American (years)`),
+            sd_lifeAfr <span style="color:#f92672">=</span> <span style="color:#a6e22e">sd</span>(`Life Expectancy African American (years)`),
+            min_lifeAfr<span style="color:#f92672">=</span><span style="color:#a6e22e">min</span>(`Life Expectancy African American (years)`), 
+            max_lifeAfr <span style="color:#f92672">=</span> <span style="color:#a6e22e">max</span>(`Life Expectancy African American (years)`),
+            IQR_lifeAfr<span style="color:#f92672">=</span><span style="color:#a6e22e">IQR</span>(`Life Expectancy African American (years)`))
+</code></pre></div><pre><code>##   mean_lifeAfr sd_lifeAfr min_lifeAfr max_lifeAfr IQR_lifeAfr
+## 1     76.50204   3.849161        71.6        86.8           4
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">  fulldata<span style="color:#f92672">%&gt;%</span> <span style="color:#a6e22e">summarize</span>(mean_lifeCau<span style="color:#f92672">=</span><span style="color:#a6e22e">mean</span>(`Life Expectancy Caucasian (years)`), 
+            sd_lifeCau<span style="color:#f92672">=</span><span style="color:#a6e22e">sd</span>(`Life Expectancy Caucasian (years)`), 
+            min_lifeCau<span style="color:#f92672">=</span><span style="color:#a6e22e">min</span>(`Life Expectancy Caucasian (years)`), 
+            max_lifeCau<span style="color:#f92672">=</span><span style="color:#a6e22e">max</span>(`Life Expectancy Caucasian (years)`), 
+            IQR_lifeCau<span style="color:#f92672">=</span><span style="color:#a6e22e">IQR</span>(`Life Expectancy Caucasian (years)`))
+</code></pre></div><pre><code>##   mean_lifeCau sd_lifeCau min_lifeCau max_lifeCau IQR_lifeCau
+## 1     78.88571   1.475071        75.4        81.2         2.1
+</code></pre><p>This shows that the filter() function returns all of the variables corresponding with the only the state of Alabama.</p>
+<p>Slice() function returns the first four rows and all of the columns (when organized alphabetically).</p>
+<p>We can also arrange overall life expectancy by descending order with arrange().</p>
+<p>Select() was used to select columns 1, 3, and 8 of our data.</p>
+<p>We added a variable of white to black ratio of each state, where we take the life expectancy of Caucasians and divide by life expectancies of African Americans for each state. At first glance, it seems like the majority of ratios are above one, meaning that the average life expectancy of caucasians in the majority of states is higher than African Americans.</p>
+<p>When we calculate our summary statistics using summarize(), we see that African Americans have a mean life expectancy of 76.5 years with a standard deviation of 3.849 years, a minimum life expectancy of 71.6 years, maximum of 86.8 years, an IQR of 4 years.</p>
+<p>For Caucasian Americans, there is a mean life expectancy of 78.89 years with a standard deviation of 1.46 years, a minimum of 75.4 years, maximum of 81.2 years, and an IQR of 2.1 years.</p>
+<p>These summary statistics were calculated because the other races had a lot of missing values. We see on average, African Americans have a lower mean life expectancy but a higher maximum life expectancy than Caucasian Americans. There is less variation from the mean life expectancy from Caucasian Americans as both the IQR and standard deviation are less than that of African Americans. African Americans also have a lower minimum life expectancy than Caucasian Americans. These summary statistics lead us to believe that African Americans have lower life expectancies than Caucasian Americans.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">select_if</span>(is.numeric) <span style="color:#f92672">%&gt;%</span>
+  <span style="color:#a6e22e">cor</span>() 
+</code></pre></div><pre><code>##                                          Life Expectancy Overall (years)
+## Life Expectancy Overall (years)                                1.0000000
+## Life Expectancy African American (years)                       0.5106305
+## Life Expectancy Caucasian (years)                              0.9547957
+##                                          Life Expectancy African American (years)
+## Life Expectancy Overall (years)                                         0.5106305
+## Life Expectancy African American (years)                                1.0000000
+## Life Expectancy Caucasian (years)                                       0.5157948
+##                                          Life Expectancy Caucasian (years)
+## Life Expectancy Overall (years)                                  0.9547957
+## Life Expectancy African American (years)                         0.5157948
+## Life Expectancy Caucasian (years)                                1.0000000
+</code></pre><p>This correlation matrix shows how strongly different variables are related. This reveals that African American life expectancy has a moderate positive linear relationship (r=0.51) with overall life expectancy and caucasian life expectancy, whereas caucasian  has a strong positive relationship with overall life expectancy with an r value of 0.95.</p>
+<h2 id="visualizing">Visualizing</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">fulldata<span style="color:#f92672">$</span>`Estimated Deaths` <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">as.numeric</span>(fulldata<span style="color:#f92672">$</span>`Estimated Deaths`)
+mdata<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">as.data.frame</span>(fulldata)
+mdata <span style="color:#f92672">%&gt;%</span>
+<span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#a6e22e">reorder</span>(State, <span style="color:#f92672">-</span>`Estimated Deaths`),fill<span style="color:#f92672">=</span>State, `Estimated Deaths`)) <span style="color:#f92672">+</span>
+<span style="color:#a6e22e">geom_bar</span>(stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">summary&#34;</span>, fun.y<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mean&#34;</span>)<span style="color:#f92672">+</span>
+<span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span><span style="color:#a6e22e">theme</span>(axis.text.x <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(angle <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span>, hjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Estimated Death Rankings by State&#34;</span>) <span style="color:#f92672">+</span><span style="color:#a6e22e">xlab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">State&#34;</span>)<span style="color:#f92672">+</span><span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>)
+</code></pre></div><p><!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">top20life<span style="color:#f92672">&lt;-</span>fulldata<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">arrange</span>(<span style="color:#a6e22e">desc</span>(`Life Expectancy Overall (years)`))<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">slice</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">20</span>)
+
+top20life <span style="color:#f92672">%&gt;%</span>
+<span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(x <span style="color:#f92672">=</span> <span style="color:#a6e22e">reorder</span>(State, <span style="color:#f92672">-</span>`Life Expectancy Overall (years)`), fill<span style="color:#f92672">=</span>State, `Life Expectancy Overall (years)`)) <span style="color:#f92672">+</span>
+<span style="color:#a6e22e">geom_bar</span>( stat <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">summary&#34;</span>, fun.y<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mean&#34;</span>)<span style="color:#f92672">+</span>
+<span style="color:#a6e22e">coord_flip</span>() <span style="color:#f92672">+</span><span style="color:#a6e22e">theme</span>(axis.text.x <span style="color:#f92672">=</span> <span style="color:#a6e22e">element_text</span>(angle <span style="color:#f92672">=</span> <span style="color:#ae81ff">-35</span>, hjust <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>)) <span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">ggtitle</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">States with Top Overall Life Expectancy&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">xlab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">State&#34;</span>) <span style="color:#f92672">+</span><span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>)<span style="color:#f92672">+</span><span style="color:#a6e22e">coord_cartesian</span>(ylim<span style="color:#f92672">=</span><span style="color:#a6e22e">c</span>(<span style="color:#ae81ff">60</span>,<span style="color:#ae81ff">90</span>))
+</code></pre></div><pre><code>## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+</code></pre><p><!-- raw HTML omitted --></p>
+<p>Making Estimated Death Rankings by State into a data frame in order to plot it in a bar plot. This ranked state by estimated cancer related deaths from 1 being the lowest number of deaths to 50 being the highest.</p>
+<p>We suspected that the states with highest overall life expectancies will have the lowest rankings in cancer deaths. From the first plot, we can see that Alaska is the lowest death ranking, followed by North Dakota, Vermont, South Dakota, and Minnesota with the lowest ranking number of cancer related deaths.</p>
+<p>From the second box plot of the top 20 overall life expectancies, we can see that this data does not necessarily correspond to the overall average life expectancy by state. There is little variation in life expectancy range in this plot as most states have a life expectancy around 80 years.</p>
+<p>We see that the top 5 highest life expectancy from highest to lowest life expectancy show Hawaii as the highest average life expectancy, followed by Minnesota, California, Connecticut, and Massachusetts. Although this data does not correspond directly to the least amount of cancer deaths from the first plot, we see from some states in this top ranked life expectancy plot that appear in the lowest number of cancer deaths such as Vermont, North Dakota, and Minnesota. This may suggest that there is an association with higher life expectancy and lower estimated cancer related deaths by state.</p>
+<h2 id="dimensionality-reduction">Dimensionality Reduction</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(cluster)
+
+fulldata1<span style="color:#f92672">&lt;-</span>fulldata<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">select_if</span>(is.numeric)<span style="color:#f92672">%&gt;%</span>scale
+
+dataPCA<span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">princomp</span>(fulldata1)
+
+<span style="color:#a6e22e">names</span>(dataPCA)
+</code></pre></div><pre><code>## [1] &quot;sdev&quot;     &quot;loadings&quot; &quot;center&quot;   &quot;scale&quot;    &quot;n.obs&quot;    &quot;scores&quot;   &quot;call&quot;
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">summary</span>(dataPCA, loadings<span style="color:#f92672">=</span>T)
+</code></pre></div><pre><code>## Importance of components:
+##                          Comp.1    Comp.2    Comp.3      Comp.4
+## Standard deviation     1.532015 0.9864544 0.7479876 0.196771494
+## Proportion of Variance 0.598992 0.2483412 0.1427853 0.009881417
+## Cumulative Proportion  0.598992 0.8473332 0.9901186 1.000000000
+## 
+## Loadings:
+##                                          Comp.1 Comp.2 Comp.3 Comp.4
+## Estimated Deaths                          0.186  0.935  0.293       
+## Life Expectancy Overall (years)          -0.603  0.264 -0.269 -0.703
+## Life Expectancy African American (years) -0.477 -0.175  0.861       
+## Life Expectancy Caucasian (years)        -0.612  0.162 -0.318  0.706
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">eigval<span style="color:#f92672">&lt;-</span>dataPCA<span style="color:#f92672">$</span>sdev^2
+
+
+varprop<span style="color:#f92672">=</span><span style="color:#a6e22e">round</span>(eigval<span style="color:#f92672">/</span><span style="color:#a6e22e">sum</span>(eigval),<span style="color:#ae81ff">2</span>) <span style="color:#75715e">#proportion of var explained by each PC</span>
+<span style="color:#a6e22e">round</span>(<span style="color:#a6e22e">cumsum</span>(eigval)<span style="color:#f92672">/</span><span style="color:#a6e22e">sum</span>(eigval),<span style="color:#ae81ff">2</span>)
+</code></pre></div><pre><code>## Comp.1 Comp.2 Comp.3 Comp.4 
+##   0.60   0.85   0.99   1.00
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">State <span style="color:#f92672">&lt;-</span>fulldata<span style="color:#f92672">$</span>State
+fulldata<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">mutate</span>(PC1<span style="color:#f92672">=</span>dataPCA<span style="color:#f92672">$</span>scores[,<span style="color:#ae81ff">1</span>], PC2<span style="color:#f92672">=</span>dataPCA<span style="color:#f92672">$</span>scores[,<span style="color:#ae81ff">2</span>])<span style="color:#f92672">%&gt;%</span>
+<span style="color:#a6e22e">ggplot</span>(<span style="color:#a6e22e">aes</span>(PC1,PC2,color<span style="color:#f92672">=</span>State))<span style="color:#f92672">+</span><span style="color:#a6e22e">geom_point</span>(<span style="color:#a6e22e">aes</span>(dataPCA<span style="color:#f92672">$</span>scores[,<span style="color:#ae81ff">1</span>], dataPCA<span style="color:#f92672">$</span>scores[,<span style="color:#ae81ff">2</span>]))<span style="color:#f92672">+</span><span style="color:#a6e22e">xlab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PC1&#34;</span>)<span style="color:#f92672">+</span><span style="color:#a6e22e">ylab</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">PC2&#34;</span>)<span style="color:#f92672">+</span>
+  <span style="color:#a6e22e">theme</span>(legend.position <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">none&#34;</span>) <span style="color:#75715e">#plots data with respect to first two PC</span>
+</code></pre></div><p><!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dataPCA<span style="color:#f92672">$</span>scores<span style="color:#f92672">%&gt;%</span>as.data.frame<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">cbind</span>(State,.)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">top_n</span>(<span style="color:#ae81ff">3</span>,Comp.1) <span style="color:#75715e">#highest on PC1</span>
+</code></pre></div><pre><code>##           State   Comp.1      Comp.2    Comp.3      Comp.4
+## 1      Arkansas 2.888237  0.67344460 0.4397621  0.06320932
+## 2      Oklahoma 3.030725  0.86990575 0.7410885 -0.01083435
+## 3 West Virginia 3.306032 -0.09911034 0.6984557 -0.14547515
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dataPCA<span style="color:#f92672">$</span>scores<span style="color:#f92672">%&gt;%</span>as.data.frame<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">cbind</span>(State,.)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">top_n</span>(<span style="color:#ae81ff">3</span>,wt<span style="color:#f92672">=</span><span style="color:#a6e22e">desc</span>(Comp.1)) <span style="color:#75715e">#lowest on PC1</span>
+</code></pre></div><pre><code>##           State    Comp.1     Comp.2    Comp.3      Comp.4
+## 1     Minnesota -2.531537 -1.0266181 0.2035124 -0.41250045
+## 2 New Hampshire -2.391277 -0.1584848 1.7505979 -0.08201638
+## 3       Vermont -2.566491 -1.3496699 0.6874814 -0.15105255
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dataPCA<span style="color:#f92672">$</span>scores<span style="color:#f92672">%&gt;%</span>as.data.frame<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">cbind</span>(State,.)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">top_n</span>(<span style="color:#ae81ff">3</span>,wt<span style="color:#f92672">=</span>Comp.2) <span style="color:#75715e">#highest on PC2</span>
+</code></pre></div><pre><code>##        State     Comp.1   Comp.2      Comp.3      Comp.4
+## 1 California -0.7331009 1.791775 -0.45852283 -0.37418787
+## 2   Colorado -0.7798697 1.698031 -0.02967601  0.18368871
+## 3     Oregon -0.2235693 1.550728  0.40373488 -0.06569669
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dataPCA<span style="color:#f92672">$</span>scores<span style="color:#f92672">%&gt;%</span>as.data.frame<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">cbind</span>(State,.)<span style="color:#f92672">%&gt;%</span><span style="color:#a6e22e">top_n</span>(<span style="color:#ae81ff">3</span>,wt<span style="color:#f92672">=</span><span style="color:#a6e22e">desc</span>(Comp.2)) <span style="color:#75715e">#lowest on PC2</span>
+</code></pre></div><pre><code>##      State     Comp.1    Comp.2     Comp.3      Comp.4
+## 1  Alabama  2.6769224 -1.882953 0.01406111 -0.01354353
+## 2   Alaska -0.7105551 -1.729440 0.09276921  0.31621024
+## 3 Kentucky  2.3609094 -1.878861 0.02504209 -0.28329825
+</code></pre><p>Arkansas, Oklahoma and W. Virginia show the most variance on PC1. California, Colorado, and Oregon show the most variance on PC2. Data is scattered along both axes of PC1 and PC2; PC1 and PC2 do not seem to have any association with State.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">library</span>(factoextra)
+</code></pre></div><pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">fviz_pca_biplot</span>(dataPCA)
+</code></pre></div><p><!-- raw HTML omitted --></p>
+<p>From the biplot, see that Life Expectancy Overall and Life Expectancy of Caucasian Americans is strongly positively correlated as they are at a small angle away from one another in the biplot.</p>
+<p>Life expectancy of African Americans is moderately positively correlated as it is pointing in the same direction but at a larger angle away from the other two variables.</p>
+<p>Estimated Deaths seems to be slightly negatively correlated with the other variables.</p>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>
