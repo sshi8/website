@@ -1,0 +1,17 @@
+---
+title: Blog post
+author: Sophie Shi
+date: '2019-12-13'
+slug: post-1
+categories: []
+tags: []
+description: ''
+---
+This semester, we covered a wide variety of statistical training techniques, working to manipulate, visualize, and interpret patterns seen commonly in biological data. For the most part, we primarily used statistical computing language R through Rstudio. In the last part of the course, we shifted toward analyzing text and string-type data using regular expressions, leading to sequence alignment and other related material. Here, we shifted to Python to achieve similar analytic goals. 
+
+In this code below, we mess around with the re.findall() function in python. This returns all non-overlapping matches of pattern in string, as a list of strings. The string is scanned left-to-right, and matches are returned in the order found. 
+
+Using re.findall(), we can match all IP addressses in this string (string2).
+
+
+

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Sophie Shi" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+    <title>Survey of Labour and Income Dynamics for Ontario (1994)</title>
+    <meta name="generator" content="Hugo 0.61.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="/blog/">BLOG</a></li>
+        
+        <li><a href="/projects/">PROJECTS</a></li>
+        
+        <li><a href="/about/">ABOUT</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="/project2/">Survey of Labour and Income Dynamics for Ontario (1994)</a></strong>
+          </h3>
+        </div>
+        <div class="blog-title">
+          <h4>
+          January 1, 0001
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>This SLID dataset is from carData. It contains survey data from a 1994 Canadian Survey of Labour and Income Dynamics for the province of Ontario, Canada. 7425 cases and 5 variables– hourly wage from all jobs, number of years of education, age in years, sex (male, female), and language (French, English, Other). The missing data points have been removed.</p>
+<pre class="r"><code>data&lt;-carData::SLID
+data&lt;-data%&gt;%remove_missing()</code></pre>
+<pre><code>## Warning: Removed 3438 rows containing missing values.</code></pre>
+<p>####Part 1.</p>
+<pre class="r"><code>man1&lt;-manova(cbind(data$wages,data$education,data$age)~sex, data=data)
+summary(man1)</code></pre>
+<pre><code>##             Df   Pillai approx F num Df den Df    Pr(&gt;F)    
+## sex          1 0.064857    92.08      3   3983 &lt; 2.2e-16 ***
+## Residuals 3985                                              
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man1)</code></pre>
+<pre><code>##  Response 1 :
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## sex            1  11493   11492  194.64 &lt; 2.2e-16 ***
+## Residuals   3985 235298      59                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##  Response 2 :
+##               Df Sum Sq Mean Sq F value Pr(&gt;F)
+## sex            1     24 24.1573  2.6182 0.1057
+## Residuals   3985  36768  9.2265               
+## 
+##  Response 3 :
+##               Df Sum Sq Mean Sq F value Pr(&gt;F)
+## sex            1    107  106.78  0.7248 0.3946
+## Residuals   3985 587080  147.32</code></pre>
+<pre class="r"><code>data%&gt;%group_by(sex)%&gt;%summarize(mean(wages))</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   sex    `mean(wages)`
+##   &lt;fct&gt;          &lt;dbl&gt;
+## 1 Female          13.8
+## 2 Male            17.2</code></pre>
+<pre class="r"><code>pairwise.t.test(data$wages,data$sex, p.adj=&quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  data$wages and data$sex 
+## 
+##      Female
+## Male &lt;2e-16
+## 
+## P value adjustment method: none</code></pre>
+<p>1 MANOVA, 3 ANOVAs, 1 t-test= 5 tests.</p>
+<p>Probability of Making at least 1 type 1 error using alpha = 0.05:
+1 - (0.95)^5 = 0.2262191</p>
+<p>Bonferroni correction alpha= 0.05/5 = 0.01.</p>
+<p>A one-way multivariate analysis was conducted to determine the effect of sex on three dependent variables (wages, education, and age). Significant differences were found among the two sexes on the three dependent measures F(1,3985)=92.08, p-value &lt;&lt; 0.0001.</p>
+<p>Univariate analyses of variance (ANOVAs) for each dependent variables were conducted as a follow up test, using the Bonferroni method to control type 1 error rates for multiple comparions. The ANOVAs for wages were significant, F(1,3985)=194.64, p &lt;&lt;0.0001.</p>
+<p>Since only one dependent variable tested significant and this only had two possible outcomes, we konw which groups differed, but post hoc analysis was performed and it showed a signicant difference in terms of wages even after adjusting for multiple comparisons.</p>
+<p>This data was a survey with individuals with missing data points removed, making it deviate from random sampling. This leads us to believe that since there are a lot of other assumptions such as multivariate normality of DVs, homogeneity of within group covariance matrices, linear relationships among DVs, no extreme univariate or multivariate outliers, and no multicollinearity, we have to doubt that all of these assumptions are met.</p>
+<p>####Part 2.</p>
+<pre class="r"><code> data%&gt;% group_by(sex) %&gt;%
+  summarize(means=mean(wages)) %&gt;% summarize(`mean_diff:` = diff(means))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `mean_diff:`
+##          &lt;dbl&gt;
+## 1         3.40</code></pre>
+<pre class="r"><code>rand_dist&lt;-vector()
+
+for(i in 1:5000){
+new&lt;-data.frame(wages=sample(data$wages),condition=data$sex) 
+rand_dist[i]&lt;-mean(new[new$condition==&quot;Male&quot;,]$wages)-
+              mean(new[new$condition==&quot;Female&quot;,]$wages)}
+
+mean(rand_dist&gt;3.395609 )*2 #pvalue</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>{hist(rand_dist,main=&quot;Mean Difference in Wages for Males vs. Females&quot;,ylab=&quot;Frequency&quot;);
+  abline(v = 8.10 ,col=&quot;red&quot;)}</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>H0: Mean wages is the same for females vs. males in Ontario.</p>
+<p>Ha: Mean wages is different for males vs. females</p>
+<p>The p-value corresponds to the probability of observing a mean difference as extreme as the one we got under this “randomization distribution”, which was calculated to be 0&lt;&lt;0.001, meaning there is a significant difference in mean wages between males and females of Ontario.</p>
+<p>####Part 3.</p>
+<pre class="r"><code>data$age_c &lt;- data$age - mean(data$age)
+data$education_c &lt;- data$education - mean(data$education)
+fit &lt;- lm(wages ~ age_c * education_c, data = data)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wages ~ age_c * education_c, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -27.303  -4.346  -0.907   3.661  36.733 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       15.617740   0.107970 144.649  &lt; 2e-16 ***
+## age_c              0.269567   0.009076  29.700  &lt; 2e-16 ***
+## education_c        0.835303   0.036792  22.703  &lt; 2e-16 ***
+## age_c:education_c  0.020160   0.002891   6.973 3.61e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.78 on 3983 degrees of freedom
+## Multiple R-squared:  0.2581, Adjusted R-squared:  0.2576 
+## F-statistic: 461.9 on 3 and 3983 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>qplot(x = education_c, y = wages, color = age_c, data = data) +
+ stat_smooth(method = &quot;lm&quot;, se = FALSE, fullrange = TRUE)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>new1 &lt;- data
+new1$age_c &lt;- mean(data$age_c)
+new1$mean &lt;- predict(fit,new1)
+new1$age_c &lt;- mean(data$age_c)+sd(data$age_c)
+new1$plus.sd &lt;- predict(fit,new1)
+new1$age_c &lt;- mean(data$age_c)-sd(data$age_c)
+new1$minus.sd &lt;- predict(fit,new1)
+newint &lt;- new1 %&gt;%dplyr:: select(wages,
+education_c, mean, plus.sd, minus.sd) %&gt;% 
+gather(age, value, -wages, -education_c)
+
+mycols&lt;-c(&quot;#619CFF&quot;,&quot;#F8766D&quot;,&quot;#00BA38&quot;)
+names(mycols)&lt;-c(&quot;-1 sd&quot;,&quot;mean&quot;,&quot;+1 sd&quot;)
+mycols=as.factor(mycols)
+
+ggplot(data,aes(education_c,wages),group=mycols)+
+  geom_point()+
+  geom_line(data=new1,aes(y=mean,color=&quot;mean&quot;))+
+  geom_line(data=new1,aes(y=plus.sd,color=&quot;+1 sd&quot;))+
+  geom_line(data=new1,aes(y=minus.sd,color=&quot;-1 sd&quot;))+
+  scale_color_manual(values=mycols)+
+  labs(color=&quot;age&quot;)+
+  theme(legend.position=c(.9,.2))</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>resids&lt;-fit$residuals; fitvals&lt;-fit$fitted.values
+ggplot()+geom_point(aes(fitvals,resids))+
+  geom_hline(yintercept=0, col=&quot;red&quot;)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<pre class="r"><code>bptest(fit)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  fit
+## BP = 173.9, df = 3, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>ggplot()+geom_histogram(aes(resids),bins=20)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+<pre class="r"><code>library(sandwich) 
+coeftest(fit)[,1:2]</code></pre>
+<pre><code>##                      Estimate  Std. Error
+## (Intercept)       15.61774011 0.107970198
+## age_c              0.26956652 0.009076309
+## education_c        0.83530267 0.036792378
+## age_c:education_c  0.02015992 0.002891027</code></pre>
+<pre class="r"><code>coeftest(fit, vcov=vcovHC(fit))[,1:2]</code></pre>
+<pre><code>##                      Estimate  Std. Error
+## (Intercept)       15.61774011 0.109040188
+## age_c              0.26956652 0.010012953
+## education_c        0.83530267 0.036503378
+## age_c:education_c  0.02015992 0.003178891</code></pre>
+<pre class="r"><code>fit2 &lt;- lm(wages~ age_c+education_c, data = data)
+summary(fit2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wages ~ age_c + education_c, data = data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -24.303  -4.495  -0.807   3.674  37.628 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 15.538753   0.108014  143.86   &lt;2e-16 ***
+## age_c        0.257090   0.008951   28.72   &lt;2e-16 ***
+## education_c  0.901464   0.035760   25.21   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.82 on 3984 degrees of freedom
+## Multiple R-squared:  0.2491, Adjusted R-squared:  0.2487 
+## F-statistic: 660.7 on 2 and 3984 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(fit, fit2, test = &quot;LRT&quot;)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: wages ~ age_c * education_c
+## Model 2: wages ~ age_c + education_c
+##   Res.Df    RSS Df Sum of Sq  Pr(&gt;Chi)    
+## 1   3983 183087                           
+## 2   3984 185322 -1   -2235.2 3.097e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>wage= intercept+A(age_c) + B(education_c) + C(age_c*education_c)</p>
+<p>Since this is mean centered, the intercept means that a person of average age and education, the hourly wage earned is 15.6177 canadian dollars. For every one year increase in age at an average education, wage increases by 0.27 dollars. For every one year increase in education at an average age, wage increases by 0.835 dollars. The interaction coefficient is the difference in wages (0.02 dollars) depending on both the effects of education_c and age_c. Interaction effect exists when the effect of an independent variable on a dependent variable changes, depending on the value of one or more other independent variables. All 3 assumptions (linearity, normality and homoskedasticity) failed graphically and by hypothesis test. Using robust SEs, standard errors decreased for education_c. The standard error increased for intercept, age_c and the interaction term. 25.76% of variation in wages is explained by age_c and education_c with interaction. Using LRT to compare the interaction model and no interaction models, the non-interaction model is better with a p-value&lt;&lt;0.0001, so we can reject the null hypothesis.</p>
+<p>####Part 4.</p>
+<pre class="r"><code>samp_distn&lt;-replicate(5000, {
+  boot_dat&lt;-data[sample(nrow(data),replace=TRUE),]
+  fit&lt;-lm(wages~ age_c * education_c ,data=boot_dat) 
+  coef(fit)
+})
+
+## Estimated SEs
+samp_distn%&gt;%t%&gt;%as.data.frame%&gt;%summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept)      age_c education_c age_c:education_c
+## 1   0.1088346 0.01008829    0.036589       0.003185203</code></pre>
+<p>Compared to the original SEs, intercept, age_c, interaction SEs increased whereas education_c decreased. Compared to the robust SEs, intercept increased in SE whereas age_c, education_c, and interaction SEs decreased.</p>
+<p>####Part 5.</p>
+<pre class="r"><code>data$y &lt;- ifelse(data$sex == &quot;Male&quot;, 1, 0)
+
+fit3&lt;-glm(y~wages+education,data=data,family=binomial(link=&quot;logit&quot;))
+coeftest(fit3)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##               Estimate Std. Error z value  Pr(&gt;|z|)    
+## (Intercept) -0.1006826  0.1490342 -0.6756    0.4993    
+## wages        0.0676558  0.0047155 14.3475 &lt; 2.2e-16 ***
+## education   -0.0712882  0.0114648 -6.2180 5.036e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coef(fit3))</code></pre>
+<pre><code>## (Intercept)       wages   education 
+##   0.9042200   1.0699970   0.9311934</code></pre>
+<pre class="r"><code>probs&lt;-predict(fit3,type=&quot;response&quot;) 
+class_diag&lt;-function(probs,truth){
+  
+  tab&lt;-table(factor(probs&gt;.5,levels=c(&quot;FALSE&quot;,&quot;TRUE&quot;)),truth)
+  acc=sum(diag(tab))/sum(tab)
+  sens=tab[2,2]/colSums(tab)[2]
+  spec=tab[1,1]/colSums(tab)[1]
+ppv=tab[2,2]/rowSums(tab)[2]
+
+if(is.numeric(truth)==FALSE &amp; is.logical(truth)==FALSE) truth&lt;-as.numeric(truth)-1
+
+  ord&lt;-order(probs, decreasing=TRUE)
+  probs &lt;- probs[ord]; truth &lt;- truth[ord]
+  
+  TPR=cumsum(truth)/max(1,sum(truth))
+  FPR=cumsum(!truth)/max(1,sum(!truth))
+  
+  dup&lt;-c(probs[-1]&gt;=probs[-length(probs)], FALSE)
+  TPR&lt;-c(0,TPR[!dup],1); FPR&lt;-c(0,FPR[!dup],1)
+  
+  n &lt;- length(TPR)
+  auc&lt;- sum( ((TPR[-1]+TPR[-n])/2) * (FPR[-1]-FPR[-n]) )
+  
+  data.frame(acc,sens,spec,ppv,auc)
+}
+class_diag(probs, data$y)</code></pre>
+<pre><code>##         acc      sens      spec       ppv       auc
+## 1 0.6147479 0.5589124 0.6701649 0.6271186 0.6391067</code></pre>
+<pre class="r"><code>table(truth=data$y, prediction=as.numeric(probs&gt;.5))%&gt;%addmargins</code></pre>
+<pre><code>##      prediction
+## truth    0    1  Sum
+##   0   1341  660 2001
+##   1    876 1110 1986
+##   Sum 2217 1770 3987</code></pre>
+<pre class="r"><code>#accuracy 
+(1341+1110)/3987</code></pre>
+<pre><code>## [1] 0.6147479</code></pre>
+<pre class="r"><code>#TPR (sensitivity)
+(1110/1986)</code></pre>
+<pre><code>## [1] 0.5589124</code></pre>
+<pre class="r"><code>#TNR (specificity)
+1341/2001</code></pre>
+<pre><code>## [1] 0.6701649</code></pre>
+<pre class="r"><code>#precision (ppv)
+1110/1770</code></pre>
+<pre><code>## [1] 0.6271186</code></pre>
+<pre class="r"><code>data$logit&lt;-predict(fit3)
+ggplot(data,aes(logit, fill=sex))+geom_density(alpha=.3)+
+  geom_vline(xintercept=0,lty=2)</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>library(plotROC) 
+ROCplot&lt;-ggplot(data)+geom_roc(aes(d=y,m=probs), n.cuts=0) 
+ROCplot</code></pre>
+<p><img src="/project2_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group      AUC
+## 1     1    -1 0.639119</code></pre>
+<pre class="r"><code>set.seed(1234)
+k=5
+data1&lt;-data[sample(nrow(data)),] 
+folds&lt;-cut(seq(1:nrow(data)),breaks=k,labels=F) 
+diags&lt;-NULL
+for(i in 1:k){
+ train&lt;-data1[folds!=i,]
+ test&lt;-data1[folds==i,]
+ truth&lt;-test$y
+ fit4&lt;-glm(y~wages + education,data=train,family=&quot;binomial&quot;)
+ probs&lt;-predict(fit4,newdata = test,type=&quot;response&quot;)
+ diags&lt;-rbind(diags,class_diag(probs,truth))
+}
+apply(diags,2,mean)</code></pre>
+<pre><code>##       acc      sens      spec       ppv       auc 
+## 0.6152436 0.5608113 0.6704621 0.6280739 0.6388772</code></pre>
+<p>From the logistic regression, we see that at 0 years age and education, the odds of being a male is multiplied by a factor of 0.904. For 1 dollar in wages, the odds of being male is multiplied by a factor of 1.07. For 1 year of education, the odds of being male is multiplied by a factor of 0.93. From the confusion matrix, we have accuracy of 0.615, sensitivity of 0.559, specificity of 0.67, and precision of 0.627. The grey area in the visualization of our logistic regression model shows misclassified area in the grey. The portion to the right of 0 is the proportion of females predicted males (false positive) and the grey area to the left of 0 is proportion males predicted as female (false negative). The AUC of our ROC plot is 0.64, meaning this is a bad ROC plot. It is difficult to predict the odds of being male from wages and education alone. With a 10 fold CV, the accuracy was 0.62, sensitivity was 0.56, specificity was 0.67, and ppv was 0.628.</p>
+<p>####Part 6.</p>
+<pre class="r"><code>y&lt;-as.matrix(data$y)
+x&lt;-data %&gt;%
+  dplyr::select(1:3) %&gt;%
+  mutate_all(scale) %&gt;%
+  as.matrix
+cv&lt;-cv.glmnet(x,y)
+lasso1&lt;-glmnet(x,y,lambda=cv$lambda.1se)
+coef(lasso1)</code></pre>
+<pre><code>## 4 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                      s0
+## (Intercept)  0.49811889
+## wages        0.11053414
+## education   -0.03359200
+## age         -0.02127524</code></pre>
+<pre class="r"><code>set.seed(1234)
+k= 10
+data1 &lt;- data[sample(nrow(data)),] 
+folds&lt;-cut(seq(1:nrow(data)),breaks=k,labels=F) 
+diags&lt;-NULL
+for(i in 1:k){
+ train&lt;-data1[folds!=i,]
+ test&lt;-data1[folds==i,]
+ truth&lt;-test$y
+ fit5&lt;-glm(y~wages,data=train,family=&quot;binomial&quot;)
+ probs&lt;-predict(fit5,newdata = test,type=&quot;response&quot;)
+ diags&lt;-rbind(diags,class_diag(probs,truth))
+}
+diags%&gt;%summarize_all(mean)</code></pre>
+<pre><code>##         acc      sens      spec      ppv       auc
+## 1 0.6059521 0.5329932 0.6790144 0.622118 0.6326441</code></pre>
+<p>This Lasso regression shows that wages, education, and age are the most significant predictors of sex. The AUC from this model is less (0.632) than that of part 5 (0.64), making the logistic regression a better fit for the data.</p>
+</div>
+
+              <hr>
+              <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div>
+            </div>
+          </div>
+          <hr>
+        <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        </div>
+      </div>
+      
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/js/docs.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

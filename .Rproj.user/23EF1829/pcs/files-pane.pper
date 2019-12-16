@@ -1,9 +1,13 @@
 {
-    "path" : "~/Desktop/website_take2",
+    "path" : "~/Desktop/website_take2/content",
     "sortOrder" : [
         {
-            "ascending" : false,
+            "ascending" : true,
             "columnIndex" : 2
+        },
+        {
+            "ascending" : false,
+            "columnIndex" : 4
         }
     ]
 }

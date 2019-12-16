@@ -2,48 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on hello</title>
-    <link>/%C3%9F/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on hello</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 02 Oct 2016 22:55:05 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 02 Oct 2019 22:55:05 -0400</lastBuildDate>
     
-	<atom:link href="/%C3%9F/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>projects</title>
-      <link>/%C3%9F/categories/projects/</link>
-      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
+      <link>/categories/projects/</link>
+      <pubDate>Wed, 02 Oct 2019 22:55:05 -0400</pubDate>
       
-      <guid>/%C3%9F/categories/projects/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>/%C3%9F/categories/r/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/%C3%9F/categories/r/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Development</title>
-      <link>/%C3%9F/categories/development/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/categories/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>golang</title>
-      <link>/%C3%9F/categories/golang/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/categories/golang/</guid>
+      <guid>/categories/projects/</guid>
       <description></description>
     </item>
     

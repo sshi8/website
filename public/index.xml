@@ -2,96 +2,81 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hello</title>
-    <link>/%C3%9F/</link>
+    <link>/</link>
     <description>Recent content on hello</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 02 Oct 2016 22:55:05 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 15 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/%C3%9F/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Projects</title>
-      <link>/%C3%9F/projects/</link>
-      <pubDate>Sun, 02 Oct 2016 22:55:05 -0400</pubDate>
+      <title>About Me</title>
+      <link>/about/about-me/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/%C3%9F/projects/</guid>
+      <guid>/about/about-me/</guid>
+      <description>My name is Sophie Shi, a fourth year Pre-Dental Biology undergraduate student at The University of Texas at Austin. To feed my growing interest in biology, I currently work in the Matouschek Lab where we explore the Ubiquitin-Proteasome system. I also love being a volunteer at UT Informal Classes Aimed at Adults with Intelectual and Developmental Disabilities. When I am not studying or in the lab, you can probably find me getting a great workout in, walking around at the farmer’s market, or making a watercolor painting!</description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>/python/python/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/python/python/</guid>
+      <description>hi</description>
+    </item>
+    
+    <item>
+      <title>Blog</title>
+      <link>/blog/post/</link>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/post/</guid>
+      <description>This semester, we covered a wide variety of statistical training techniques, working to manipulate, visualize, and interpret patterns seen commonly in biological data. For the most part, we primarily used statistical computing language R through Rstudio. In the last part of the course, we shifted toward analyzing text and string-type data using regular expressions, leading to sequence alignment and other related material. Here, we shifted to Python.
+In this code below, we mess around with the re.</description>
+    </item>
+    
+    <item>
+      <title>website</title>
+      <link>/2019/12/13/website/</link>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/13/website/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/%C3%9F/blog/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Wed, 02 Oct 2019 22:55:05 -0400</pubDate>
       
-      <guid>/%C3%9F/blog/2015-07-23-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
-    </item>
-    
-    <item>
-      <title>Creating a New Theme</title>
-      <link>/%C3%9F/blog/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/blog/creating-a-new-theme/</guid>
-      <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&#39;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&#39;t cover using CSS to style your theme.
-We&#39;ll start with creating a new site with a very basic template.</description>
-    </item>
-    
-    <item>
-      <title>(Hu)go Template Primer</title>
-      <link>/%C3%9F/blog/goisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/blog/goisforlovers/</guid>
-      <description>Hugo uses the excellent go html/template library for its template engine. It is an extremely lightweight engine that provides a very small amount of logic. In our experience that it is just the right amount of logic to be able to create a good static website. If you have used other template systems from different languages or frameworks you will find a lot of similarities in go templates.
-This document is a brief primer on using go templates.</description>
-    </item>
-    
-    <item>
-      <title>Getting Started with Hugo</title>
-      <link>/%C3%9F/blog/hugoisforlovers/</link>
-      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/blog/hugoisforlovers/</guid>
-      <description>Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
-Save it somewhere specific as we will be using it in the next step.
-More complete instructions are available at installing hugo
-Step 2. Build the Docs Hugo has its own example site which happens to also be the documentation site you are reading right now.
-Follow the following steps:
- Clone the hugo repository Go into the repo Run hugo in server mode and build the docs Open your browser to http://localhost:1313  Corresponding pseudo commands:</description>
-    </item>
-    
-    <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>/%C3%9F/blog/migrate-from-jekyll/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      
-      <guid>/%C3%9F/blog/migrate-from-jekyll/</guid>
-      <description>Move static content to static Jekyll has a rule that any directory not starting with _ will be copied as-is to the _site output. Hugo keeps all static content under static. You should therefore move it all there. With Jekyll, something that looked like
-▾ &amp;lt;root&amp;gt;/ ▾ images/ logo.png  should become
-▾ &amp;lt;root&amp;gt;/ ▾ static/ ▾ images/ logo.png  Additionally, you&#39;ll want any files that should reside at the root (such as CNAME) to be moved to static.</description>
+      <guid>/projects/</guid>
+      <description>Projects Here are some projects I have been working on:
+  Project 1
+  Project 2
+  </description>
     </item>
     
     <item>
       <title>A Glimpse at Life Expectancies and Estimated Cancer Deaths</title>
-      <link>/%C3%9F/blog/ssproject1-1/</link>
+      <link>/ssproject1-1/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/%C3%9F/blog/ssproject1-1/</guid>
+      <guid>/ssproject1-1/</guid>
       <description>cancer &amp;lt;- read.csv(&amp;quot;~/Downloads/cancerdeath.csv&amp;quot;) life &amp;lt;- read.csv(&amp;quot;~/Downloads/life.csv&amp;quot;) head(cancer) ## State Estimated.New.Cases..2019 Estimated.Deaths..2019. ## 1 ## 2 ## 3 Alabama 28,950 10,630 ## 4 Alaska 3,090 1,120 ## 5 Arizona 37,490 12,470 ## 6 Arkansas 16,580 6,800 head(life) ## State Overall.Avg.. Black.Avg. Latino.Avg. Asian.Avg. ## 1 Hawaii 81.3 79.7 87.3 83.5 ## 2 Minnesota 81.1 82.5 76.8 82 ## 3 Connecticut 80.8 77.8 83.1 89.1 ## 4 California 80.8 75.1 83.2 86.</description>
     </item>
     
     <item>
-      <title>A Glimpse at Life Expectancies and Estimated Cancer Deaths</title>
-      <link>/%C3%9F/ssproject1-1/</link>
+      <title>Survey of Labour and Income Dynamics for Ontario (1994)</title>
+      <link>/project2/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/%C3%9F/ssproject1-1/</guid>
-      <description>cancer &amp;lt;- read.csv(&amp;quot;~/Downloads/cancerdeath.csv&amp;quot;) life &amp;lt;- read.csv(&amp;quot;~/Downloads/life.csv&amp;quot;) head(cancer) ## State Estimated.New.Cases..2019 Estimated.Deaths..2019. ## 1 ## 2 ## 3 Alabama 28,950 10,630 ## 4 Alaska 3,090 1,120 ## 5 Arizona 37,490 12,470 ## 6 Arkansas 16,580 6,800 head(life) ## State Overall.Avg.. Black.Avg. Latino.Avg. Asian.Avg. ## 1 Hawaii 81.3 79.7 87.3 83.5 ## 2 Minnesota 81.1 82.5 76.8 82 ## 3 Connecticut 80.8 77.8 83.1 89.1 ## 4 California 80.8 75.1 83.2 86.</description>
+      <guid>/project2/</guid>
+      <description>Introduction This SLID dataset is from carData. It contains survey data from a 1994 Canadian Survey of Labour and Income Dynamics for the province of Ontario, Canada. 7425 cases and 5 variables– hourly wage from all jobs, number of years of education, age in years, sex (male, female), and language (French, English, Other). The missing data points have been removed.
+data&amp;lt;-carData::SLID data&amp;lt;-data%&amp;gt;%remove_missing() ## Warning: Removed 3438 rows containing missing values.</description>
     </item>
     
   </channel>

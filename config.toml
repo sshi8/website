@@ -1,4 +1,4 @@
-baseurl = "/ß"
+baseurl = "/"
 languageCode = "en-US"
 title = "hello"
 # Enable comments by entering your Disqus shortname
@@ -11,7 +11,7 @@ theme = "hugo-sustain"
   post = "/:year/:month/:day/:slug"
 
 [params]
-  avatar = "IMG_8642.JPG"
+  avatar = "me.png"
   author = "Sophie Shi"
   description = ""
 
@@ -21,9 +21,7 @@ theme = "hugo-sustain"
 
 [params.social]
   Github        = "sshi8"
-  Email         = "email@example.com"
-  Twitter       = "username"
-  LinkedIn      = "username"
+  Email         = "sophiashi@utexas.edu"
 
 ## Main Menu
 [[menu.main]]
@@ -37,12 +35,7 @@ theme = "hugo-sustain"
   weight = 200
   url = "/projects/"
 [[menu.main]]
-  name = "resume"
-  identifier = "resume"
+  name = "About"
+  identifier = "About"
   weight = 300
-  url = "/resume/"
-[[menu.main]]
-  name = "potato chips"
-  identifier = "potato chips"
-  weight = 300
-  url = "/ptat/"
+  url = "/about/"
